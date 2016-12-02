@@ -1,4 +1,6 @@
-package classDirectory;
+package dynamodb;
+
+import model.Course;
 
 import java.util.HashMap;
 import java.util.Map;

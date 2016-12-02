@@ -1,5 +1,7 @@
-package classDirectory;
+package testers;
 
+import dynamodb.*;
+import model.*;
 
 public class DirectoryTester {
 	
