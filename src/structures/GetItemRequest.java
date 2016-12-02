@@ -43,21 +43,40 @@ public class GetItemRequest {
 		this.tableName = tableName;
 	}
 	
+	/**
+	 * get the request key itself
+	 * @return
+	 */
 	public PrimaryKey getRequest() {
 		return request;
 	}
 
+	/**
+	 * set the request key to a whole now PrimaryKey object
+	 * @param request
+	 */
 	public void setRequest(PrimaryKey request) {
 		this.request = request;
 	}
-
+	
+	/**
+	 * add 1 or more KeyAttribute objects directly to the requestKey as unique identifier components
+	 * @param attributes: KeyAttribute Objects
+	 */
 	public void addKeyAttributesToRequestKey(KeyAttribute... attributes) {
 		request.addComponents(attributes);
 	}
 	
+	
+	/**
+	 * add a object key pair to the request key as part of the unique identifier
+	 * @param attributeName
+	 * @param attributeValue
+	 */
 	public void addComponentToRequestKey(String attributeName, Object attributeValue) {
 		request.addComponent(attributeName, attributeValue);
 	}
+	
 	
 	
 
