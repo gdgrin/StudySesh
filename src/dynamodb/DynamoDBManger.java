@@ -1,5 +1,7 @@
 package dynamodb;
 
+import structures.AuthorizationKey;
+
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.AWSCredentials;
@@ -18,27 +20,31 @@ public class DynamoDBManger {
 	private AWSCredentials credentials;
 	public boolean isAuthenicated;
 	
-	private String tableName;
 	
 	protected DynamoDBManger() {
 		isAuthenicated  = false;
 		dynamodbClient = null;
 		credentials = null;
-		tableName = "";
 	}
 	
 	public DynamoDBManger(String accessKey, String secretKey, String tableName) {
 		isAuthenicated = false;
 		dynamodbClient = null;
-		this.tableName = tableName;
 		authenticate(accessKey, secretKey);
 	}
 	
-	public boolean setUpClientWithKey() {
-		authenticate(accessKey, secretKey);
+	public boolean setUpClientWithKey(AuthorizationKey key) {
+		if (authenticate(key.getAccessKey(), key.getSecretKey())) {
+			isAuthenicated = true;
+		}
+		else {
+			isAuthenicated = false;
+		}
+		
+		return isAuthenicated;
 	}
 	
-	private boolean doesTableExitst() {
+	public boolean doesTableExitst(String tableName) {
 		if (dynamodbClient != null) {
 			try {
 				dynamodbClient.describeTable(tableName);
@@ -54,13 +60,9 @@ public class DynamoDBManger {
 		return false;
 	}
 	
-	private void authenticate(String accessKey, String secretKey) {
+	private boolean authenticate(String accessKey, String secretKey) {
 		if (isAuthenicated) {
-			return;
-		}
-		
-		if (tableName == "") {
-			return;
+			return true;
 		}
 		
 		credentials = new BasicAWSCredentials(accessKey, secretKey);
@@ -68,7 +70,10 @@ public class DynamoDBManger {
 		try {
 			dynamodbClient = new AmazonDynamoDBClient(credentials);
 			
-			isAuthenicated = true;
+			if (dynamodbClient != null) {
+				return true;
+			}
+			
 		}
 		catch (AmazonClientException e) {
 			System.out.println("Caught an AmazonClientException, which means the client encountered "
@@ -76,10 +81,12 @@ public class DynamoDBManger {
                     + "such as not being able to access the network.");
             System.out.println("Error Message: " + e.getMessage());
 		}
+		
+		return false;
 	}
 	
 	
-	public Item getItem(PrimaryKey idKey) {
+	public Item getItem( idKey) {
 		if (!isAuthenicated) {
 			return null;
 		}
