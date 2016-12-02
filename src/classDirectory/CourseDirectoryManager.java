@@ -34,7 +34,7 @@ import com.amazonaws.services.dynamodbv2.util.TableUtils;
 import com.amazonaws.services.simpledb.model.Item;
 
 
-public class DynamoDBManager {
+public class CourseDirectoryManager {
 
 	static final private String tableName = "ClassDirectory";
 	static final private String departmentAttributeName = "department";
@@ -50,7 +50,7 @@ public class DynamoDBManager {
 	 * instantiate default null ClassDirectoryManager
 	 */
 	
-	public DynamoDBManager() {
+	public CourseDirectoryManager() {
 		isAuthenicated  = false;
 		dynamodbClient = null;
 		credentials = null;
@@ -62,7 +62,7 @@ public class DynamoDBManager {
 	 * @param secretKey
 	 */
 	
-	public DynamoDBManager(String accessKey, String secretKey) {
+	public CourseDirectoryManager(String accessKey, String secretKey) {
 		isAuthenicated = false;
 		dynamodbClient = null;
 		authenticate(accessKey, secretKey);
