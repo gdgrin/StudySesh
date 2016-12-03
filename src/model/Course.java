@@ -1,4 +1,4 @@
-package classDirectory;
+package model;
 
 public class Course {
 

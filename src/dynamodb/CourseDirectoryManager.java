@@ -1,46 +1,21 @@
-package classDirectory;
+package dynamodb;
 
-import java.util.HashMap;
-import java.util.Map;
+import model.Course;
+import model.CourseDirectory;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
-import com.amazonaws.regions.Region;
-import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.KeyAttribute;
 import com.amazonaws.services.dynamodbv2.document.PrimaryKey;
 import com.amazonaws.services.dynamodbv2.document.Table;
-import com.amazonaws.services.dynamodbv2.model.AttributeDefinition;
-import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
-import com.amazonaws.services.dynamodbv2.model.Condition;
-import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
-import com.amazonaws.services.dynamodbv2.model.DescribeTableRequest;
-import com.amazonaws.services.dynamodbv2.model.KeySchemaElement;
-import com.amazonaws.services.dynamodbv2.model.KeyType;
-import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
-import com.amazonaws.services.dynamodbv2.model.PutItemRequest;
-import com.amazonaws.services.dynamodbv2.model.PutItemResult;
-import com.amazonaws.services.dynamodbv2.model.ScalarAttributeType;
-import com.amazonaws.services.dynamodbv2.model.ScanRequest;
-import com.amazonaws.services.dynamodbv2.model.ScanResult;
-import com.amazonaws.services.dynamodbv2.model.TableDescription;
-import com.amazonaws.services.dynamodbv2.util.TableUtils;
-import com.amazonaws.services.simpledb.model.Item;
 
 
-public class DynamoDBManager {
 
-	static final private String tableName = "ClassDirectory";
-	static final private String departmentAttributeName = "department";
-	static final private String collegeAttributeName = "college";
-	static final private String courseAttributeName = "courseNumber";
-	static final private String nameAttributeName = "title";
+public class CourseDirectoryManager {
 	
 	private AmazonDynamoDBClient dynamodbClient;
 	private AWSCredentials credentials;
@@ -49,8 +24,7 @@ public class DynamoDBManager {
 	/**
 	 * instantiate default null ClassDirectoryManager
 	 */
-	
-	public DynamoDBManager() {
+	public CourseDirectoryManager() {
 		isAuthenicated  = false;
 		dynamodbClient = null;
 		credentials = null;
@@ -61,8 +35,7 @@ public class DynamoDBManager {
 	 * @param accessKey
 	 * @param secretKey
 	 */
-	
-	public DynamoDBManager(String accessKey, String secretKey) {
+	public CourseDirectoryManager(String accessKey, String secretKey) {
 		isAuthenicated = false;
 		dynamodbClient = null;
 		authenticate(accessKey, secretKey);
@@ -116,8 +89,8 @@ public class DynamoDBManager {
 		}
 		
 		
-		KeyAttribute dep = new KeyAttribute(departmentAttributeName, department);
-		KeyAttribute num = new KeyAttribute(courseAttributeName, Integer.parseInt(number));
+		KeyAttribute dep = new KeyAttribute(CourseDirectory.departmentAttributeName, department);
+		KeyAttribute num = new KeyAttribute(CourseDirectory.numberAttributeName, Integer.parseInt(number));
 		
 		PrimaryKey primeKey = new PrimaryKey(dep, num);
 		
@@ -126,16 +99,16 @@ public class DynamoDBManager {
 		try {
 			DynamoDB db = new DynamoDB(dynamodbClient);
 			
-			Table classTable = db.getTable(tableName);
+			Table classTable = db.getTable(CourseDirectory.tableName);
 			
 			com.amazonaws.services.dynamodbv2.document.Item result = classTable.getItem(primeKey);
 			
-			int numba = result.getInt(courseAttributeName);
+			int numba = result.getInt(CourseDirectory.numberAttributeName);
 			
-			returnCourse = new Course(result.getString(collegeAttributeName),
-					result.getString(departmentAttributeName),
+			returnCourse = new Course(result.getString(CourseDirectory.collegeAttributeName),
+					result.getString(CourseDirectory.departmentAttributeName),
 					Integer.toString(numba), 
-					result.getString(nameAttributeName));
+					result.getString(CourseDirectory.nameAttributeName));
 			
 		} catch (AmazonServiceException ase) {
 			System.out.println("Caught an AmazonServiceException, which means your request made it "

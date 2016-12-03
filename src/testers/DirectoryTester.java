@@ -1,5 +1,7 @@
-package classDirectory;
+package testers;
 
+import dynamodb.*;
+import model.*;
 
 public class DirectoryTester {
 	
@@ -7,12 +9,13 @@ public class DirectoryTester {
 	static final private String secretKey = "WrIAoMXSkruITwLqSahCyUt/48hiR9zGTo/MnWxy";
 	
 	public static void main(String[] args) {
-		DynamoDBManager manager = new DynamoDBManager(accessKey, secretKey);
+		CourseDirectoryManager manager = new CourseDirectoryManager(accessKey, secretKey);
 		
 		if (!manager.isAuthenicated) {
 			System.out.println("Failing to Authenicate");
 			return;
 		}
+		
 		Course be200;
 		try {
 			be200 = manager.getCourse("BE", "200");
