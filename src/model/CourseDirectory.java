@@ -8,8 +8,48 @@ public class CourseDirectory {
 	static final public String numberAttributeName = "courseNumber";
 	static final public String nameAttributeName = "title";
 	
+	static final int collegeCodeSize = 3;
+	static final int departmentCodeSize = 2;
+	static final int courseNumDigits = 3;
+	
 	public CourseDirectory() {
 		
+	}
+	
+	/**
+	 * check if the college code is valid
+	 * @param code
+	 * @return true if is valid, false otherwise
+	 */
+	static public boolean isValidCollegeCode(String code) {
+		if (code.length() != CourseDirectory.collegeCodeSize) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * check if the dep. code is valid
+	 * @param code
+	 * @return true if is valid, false otherwise
+	 */
+	static public boolean isValidDepartmentCode(String code) {
+		if (code.length() != CourseDirectory.departmentCodeSize) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * check if the course number is valid
+	 * @param code
+	 * @return true if is valid, false otherwise
+	 */
+	static public boolean isValidCourseNumber(String code) {
+		if (code.length() != CourseDirectory.courseNumDigits) {
+			return false;
+		}
+		return true;
 	}
 
 }

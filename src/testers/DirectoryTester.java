@@ -2,25 +2,26 @@ package testers;
 
 import dynamodb.*;
 import model.*;
+import structures.AuthorizationKey;
+import structures.Requests.GetCourseRequest;
 
 public class DirectoryTester {
 	
-	static final private String accessKey = "AKIAJMYDIODMCSWDV6JQ";
-	static final private String secretKey = "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";
 	
 	public static void main(String[] args) {
-		CourseDirectoryManager manager = new CourseDirectoryManager(accessKey, secretKey);
+		CourseDirectoryManager manager = new CourseDirectoryManager(new AuthorizationKey());
 		
 		if (!manager.isAuthenicated) {
 			System.out.println("Failing to Authenicate");
 			return;
 		}
 		
+		GetCourseRequest request = new GetCourseRequest("OG", "200");
+		
 		Course be200;
 		try {
-			be200 = manager.getCourse("BE", "200");
+			be200 = manager.getCourse(request);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 			e.printStackTrace();
 			return;
 		}

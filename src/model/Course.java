@@ -1,10 +1,6 @@
 package model;
 
 public class Course {
-
-	static final int collegeCodeSize = 3;
-	static final int departmentCodeSize = 2;
-	static final int courseNumDigits = 3;
 	
 	private String _college;
 	private String _department;
@@ -50,7 +46,7 @@ public class Course {
 	 */
 	protected void setCollege(String college) {
 		try {
-			if (!isValidCollegeCode(college)) {
+			if (!CourseDirectory.isValidCollegeCode(college)) {
 				throw new Exception("Trying to set college code to "+college+".");
 			}
 		} catch (Exception e) {
@@ -78,7 +74,7 @@ public class Course {
 	 */
 	protected void setDepartment(String department) {
 		try {
-			if (!isValidDepartmentCode(department)) {
+			if (!CourseDirectory.isValidDepartmentCode(department)) {
 				throw new Exception("Trying to set invalid department code.");
 			}
 		} catch (Exception e) {
@@ -141,41 +137,9 @@ public class Course {
 	}
 	
 	
-	/**
-	 * check if the dep. code is valid
-	 * @param code
-	 * @return true if is valid, false otherwise
-	 */
-	static public boolean isValidDepartmentCode(String code) {
-		if (code.length() != departmentCodeSize) {
-			return false;
-		}
-		return true;
-	}
-	
-	/**
-	 * check if the college code is valid
-	 * @param code
-	 * @return true if is valid, false otherwise
-	 */
-	static public boolean isValidCollegeCode(String code) {
-		if (code.length() != collegeCodeSize) {
-			return false;
-		}
-		return true;
-	}
 	
 	
-	/**
-	 * check if the course number is valid
-	 * @param code
-	 * @return true if is valid, false otherwise
-	 */
-	static public boolean isValidCourseNumber(String code) {
-		if (code.length() != courseNumDigits) {
-			return false;
-		}
-		return true;
-	}
+	
+	
 
 }

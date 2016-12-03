@@ -1,4 +1,4 @@
-package structures;
+package structures.Requests;
 
 import com.amazonaws.services.dynamodbv2.document.KeyAttribute;
 import com.amazonaws.services.dynamodbv2.document.PrimaryKey;

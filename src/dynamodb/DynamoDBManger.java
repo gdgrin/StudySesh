@@ -1,7 +1,7 @@
 package dynamodb;
 
 import structures.AuthorizationKey;
-import structures.GetItemRequest;
+import structures.Requests.GetItemRequest;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
@@ -10,16 +10,18 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
-import com.amazonaws.services.dynamodbv2.document.PrimaryKey;
 import com.amazonaws.services.dynamodbv2.document.Table;
-import com.amazonaws.services.dynamodbv2.model.DescribeTableResult;
 import com.amazonaws.services.dynamodbv2.model.ResourceNotFoundException;
 
 public class DynamoDBManger {
-
-	private AmazonDynamoDBClient dynamodbClient;
-	private AWSCredentials credentials;
+	
 	public boolean isAuthenicated;
+	
+	protected AmazonDynamoDBClient dynamodbClient;
+	protected String tableName;
+	
+	private AWSCredentials credentials;
+	
 	
 	
 	protected DynamoDBManger() {
@@ -28,14 +30,15 @@ public class DynamoDBManger {
 		credentials = null;
 	}
 	
-	public DynamoDBManger(String accessKey, String secretKey, String tableName) {
+	public DynamoDBManger(AuthorizationKey authKey, String tableName) {
 		isAuthenicated = false;
 		dynamodbClient = null;
-		authenticate(accessKey, secretKey);
+		this.tableName = tableName;
+		setUpClientWithKey(authKey);
 	}
 	
-	public boolean setUpClientWithKey(AuthorizationKey key) {
-		if (authenticate(key.getAccessKey(), key.getSecretKey())) {
+	protected boolean setUpClientWithKey(AuthorizationKey key) {
+		if (authenticate(key.getAccessKey(), key.getSecretKey()) && doesTableExitst(this.tableName)) {
 			isAuthenicated = true;
 		}
 		else {
@@ -45,7 +48,7 @@ public class DynamoDBManger {
 		return isAuthenicated;
 	}
 	
-	public boolean doesTableExitst(String tableName) {
+	private boolean doesTableExitst(String tableName) {
 		if (dynamodbClient != null) {
 			try {
 				dynamodbClient.describeTable(tableName);
@@ -87,7 +90,7 @@ public class DynamoDBManger {
 	}
 	
 	
-	public Item getItem(GetItemRequest req) {
+	public Item getItem(GetItemRequest req) throws ResourceNotFoundException{
 		if (!isAuthenicated) {
 			return null;
 		}
@@ -103,11 +106,17 @@ public class DynamoDBManger {
 			printException(ase);
 		}
 		
+		if (result == null) {
+			ResourceNotFoundException exception = new ResourceNotFoundException("Could not find item matching GetItemRequest");
+			exception.setServiceName("DynamoDB");
+			throw exception;
+		}
+		
 		return result;
 	}
 	
 	
-	public void printException(AmazonServiceException ase) {
+	protected void printException(AmazonServiceException ase) {
 		System.out.println("Caught an AmazonServiceException, which means your request made it "
                 + "to AWS, but was rejected with an error response for some reason.");
         System.out.println("Error Message:    " + ase.getMessage());

@@ -1,7 +1,9 @@
-package structures;
+package structures.Requests;
 
 import com.amazonaws.services.dynamodbv2.document.KeyAttribute;
+
 import model.CourseDirectory;
+import structures.GetInterface;
 
 public class GetCourseRequest extends GetItemRequest implements GetInterface{
 
@@ -33,7 +35,7 @@ public class GetCourseRequest extends GetItemRequest implements GetInterface{
 		int depCount = 0;
 		int numCount = 0;
 		
-		for (String atrName : request.getComponentNameSet()) {
+		for (String atrName : request.getComponentNameSet()) {		//Check if the attribute names fit the AWS course table schema
 			switch (atrName) {
 				case CourseDirectory.collegeAttributeName:			
 					break;
@@ -54,6 +56,14 @@ public class GetCourseRequest extends GetItemRequest implements GetInterface{
 		
 		if (depCount == 0 || numCount == 0) {
 			attributeNamesCorrect = false;
+		}
+		
+		if (!CourseDirectory.isValidDepartmentCode(getDepartment())) {		//check for the correct size dep code
+			return false;
+		}
+		
+		if (!CourseDirectory.isValidCourseNumber(getNumber())) {			//check for the correct num of digits in courseNumber
+			return false;	
 		}
 		
 		return attributeNamesCorrect;

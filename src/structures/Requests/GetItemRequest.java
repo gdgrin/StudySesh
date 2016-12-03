@@ -1,7 +1,8 @@
-package structures;
+package structures.Requests;
 
 import com.amazonaws.services.dynamodbv2.document.KeyAttribute;
-import com.amazonaws.services.dynamodbv2.document.PrimaryKey;
+import structures.GetInterface;
+import structures.Requests.RequestKey;
 
 public class GetItemRequest implements GetInterface {
 
@@ -47,7 +48,7 @@ public class GetItemRequest implements GetInterface {
 	 * get the request key itself
 	 * @return
 	 */
-	public PrimaryKey getRequest() {
+	public RequestKey getRequest() {
 		return request;
 	}
 
