@@ -1,6 +1,7 @@
 package dynamodb;
 
 import structures.AuthorizationKey;
+import structures.GetItemRequest;
 
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
@@ -86,7 +87,7 @@ public class DynamoDBManger {
 	}
 	
 	
-	public Item getItem( idKey) {
+	public Item getItem(GetItemRequest req) {
 		if (!isAuthenicated) {
 			return null;
 		}
@@ -94,9 +95,9 @@ public class DynamoDBManger {
 		Item result = null;
 		try {
 			DynamoDB db = new DynamoDB(dynamodbClient);
-			Table classTable = db.getTable(tableName);
+			Table classTable = db.getTable(req.getTableName());
 			
-			result = classTable.getItem(idKey);
+			result = classTable.getItem(req.getRequest());
 			
 		} catch (AmazonServiceException ase) {
 			printException(ase);

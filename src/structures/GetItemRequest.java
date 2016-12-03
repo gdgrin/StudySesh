@@ -3,10 +3,10 @@ package structures;
 import com.amazonaws.services.dynamodbv2.document.KeyAttribute;
 import com.amazonaws.services.dynamodbv2.document.PrimaryKey;
 
-public class GetItemRequest {
+public class GetItemRequest implements GetInterface {
 
-	private PrimaryKey request;
-	private String tableName;
+	protected RequestKey request;
+	protected String tableName;
 	
 	/**
 	 * creates request with tableName and default PrimaryKey
@@ -14,7 +14,7 @@ public class GetItemRequest {
 	 */
 	public GetItemRequest(String tableName) {
 		this.tableName = tableName;
-		request = new PrimaryKey();
+		request = new RequestKey();
 	}
 	
 	/**
@@ -22,7 +22,7 @@ public class GetItemRequest {
 	 * @param tableName
 	 * @param requestKey representing unique table item
 	 */
-	public GetItemRequest(String tableName, PrimaryKey requestKey) {
+	public GetItemRequest(String tableName, RequestKey requestKey) {
 		this.setTableName(tableName);
 		this.request = requestKey;
 	}
@@ -55,7 +55,7 @@ public class GetItemRequest {
 	 * set the request key to a whole now PrimaryKey object
 	 * @param request
 	 */
-	public void setRequest(PrimaryKey request) {
+	public void setRequest(RequestKey request) {
 		this.request = request;
 	}
 	
@@ -75,6 +75,23 @@ public class GetItemRequest {
 	 */
 	public void addComponentToRequestKey(String attributeName, Object attributeValue) {
 		request.addComponent(attributeName, attributeValue);
+	}
+
+	/**
+	 * checks if a tableName is specified, and request key has at least 1 component
+	 * @return valid status
+	 */
+	public boolean isValid() {
+		if (tableName == "") {
+			return false;
+		}
+		if (request == null) {
+			return false;
+		}
+		if (request.getComponents().size() < 1) {
+			return false;
+		}
+		return true;
 	}
 	
 	
