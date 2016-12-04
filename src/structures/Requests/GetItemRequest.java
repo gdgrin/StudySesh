@@ -2,7 +2,7 @@ package structures.Requests;
 
 import com.amazonaws.services.dynamodbv2.document.KeyAttribute;
 import structures.GetInterface;
-import structures.Requests.RequestKey;
+import structures.RequestKey;
 
 public class GetItemRequest implements GetInterface {
 

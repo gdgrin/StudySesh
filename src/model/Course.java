@@ -1,8 +1,12 @@
 package model;
 
+import javax.security.auth.kerberos.KerberosTicket;
+
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+
+import structures.CoursePrimaryKey;
 
 @DynamoDBTable(tableName = CourseDirectory.tableName)
 public class Course {
@@ -16,10 +20,17 @@ public class Course {
 	 * set default values: college = "ABC", department = "XX", and courseNumber = 100
 	 */
 	public Course() {
-		setCollege("ABC");
-		setDepartment("XX");
-		setNumber(Integer.parseInt("100"));
-		setName("Course Name");
+		setCollege(null);
+		setDepartment(null);
+		setNumber(null);
+		setName(null);
+	}
+	
+	
+	public Course(CoursePrimaryKey key) {
+		this();
+		setDepartment(key.getDepartment());
+		setNumber(key.getNumber());
 	}
 	
 	/**
@@ -34,6 +45,8 @@ public class Course {
 		setNumber(Integer.parseInt(courseNumber));
 		setName(courseName);
 	}
+	
+
 
 
 	/**
@@ -118,6 +131,10 @@ public class Course {
 	}
 	
 	
+	public String getNumberAsString() {
+		return Integer.toString(getNumber());
+	}
+	
 	/**
 	 * get the name of the course
 	 * @return the name of the course
@@ -142,7 +159,9 @@ public class Course {
 		return getCollege() + " " + getDepartment() + " " + getNumber() + ": " + getName();
 	}
 	
-	
+	public CoursePrimaryKey getPrimaryKey() {
+		return new CoursePrimaryKey(getDepartment(), getNumber());
+	}
 	
 	
 	

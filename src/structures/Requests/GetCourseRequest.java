@@ -1,8 +1,8 @@
 package structures.Requests;
 
-import com.amazonaws.services.dynamodbv2.document.KeyAttribute;
 
 import model.CourseDirectory;
+import structures.CoursePrimaryKey;
 import structures.GetInterface;
 
 public class GetCourseRequest extends GetItemRequest implements GetInterface{
@@ -13,11 +13,8 @@ public class GetCourseRequest extends GetItemRequest implements GetInterface{
 
 	public GetCourseRequest(String department, String number) {
 		super(CourseDirectory.tableName);
-		
-		KeyAttribute dep = new KeyAttribute(CourseDirectory.departmentAttributeName, department);
-		KeyAttribute num = new KeyAttribute(CourseDirectory.numberAttributeName, Integer.parseInt(number));
-		
-		RequestKey primeKey = new RequestKey(dep, num);
+				
+		CoursePrimaryKey primeKey = new CoursePrimaryKey(department, Integer.parseInt(number));
 		
 		setRequest(primeKey);
 		

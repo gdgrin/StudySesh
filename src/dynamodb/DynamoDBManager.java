@@ -19,7 +19,7 @@ public class DynamoDBManager {
 	public boolean isAuthenicated;
 	
 	protected AmazonDynamoDBClient dynamodbClient;
-	protected DynamoDBMapper mapper;
+	private DynamoDBMapper mapper;
 	protected String tableName;
 	
 	private AWSCredentials credentials;
@@ -141,6 +141,10 @@ public class DynamoDBManager {
 	public <T> T getMappedItem(Class<T> clazz, Object primaryKey) {
 		T returnObj = mapper.load(clazz, primaryKey);
 		return returnObj;
+	}
+	
+	public void saveMappedItem(Object saveObj) {
+		mapper.save(saveObj);
 	}
 	
 	
