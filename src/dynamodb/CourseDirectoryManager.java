@@ -58,5 +58,9 @@ public class CourseDirectoryManager extends DynamoDBManger {
 	}
 	
 	
+	public void saveCourse(Course course) {
+		
+	}
+	
 
 }

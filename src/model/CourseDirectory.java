@@ -22,7 +22,7 @@ public class CourseDirectory {
 	 * @return true if is valid, false otherwise
 	 */
 	static public boolean isValidCollegeCode(String code) {
-		if (code.length() != CourseDirectory.collegeCodeSize) {
+		if (code.length() != collegeCodeSize) {
 			return false;
 		}
 		return true;
@@ -34,7 +34,7 @@ public class CourseDirectory {
 	 * @return true if is valid, false otherwise
 	 */
 	static public boolean isValidDepartmentCode(String code) {
-		if (code.length() != CourseDirectory.departmentCodeSize) {
+		if (code.length() != departmentCodeSize) {
 			return false;
 		}
 		return true;
@@ -46,7 +46,7 @@ public class CourseDirectory {
 	 * @return true if is valid, false otherwise
 	 */
 	static public boolean isValidCourseNumber(String code) {
-		if (code.length() != CourseDirectory.courseNumDigits) {
+		if (code.length() != courseNumDigits) {
 			return false;
 		}
 		return true;

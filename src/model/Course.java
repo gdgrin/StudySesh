@@ -1,10 +1,15 @@
 package model;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+
+@DynamoDBTable(tableName = CourseDirectory.tableName)
 public class Course {
 	
 	private String _college;
 	private String _department;
-	private String _number;
+	private Integer _number;
 	private String _name;
 	
 	/**
@@ -13,7 +18,7 @@ public class Course {
 	public Course() {
 		setCollege("ABC");
 		setDepartment("XX");
-		setNumber("100");
+		setNumber(Integer.parseInt("100"));
 		setName("Course Name");
 	}
 	
@@ -26,7 +31,7 @@ public class Course {
 	public Course(String collegeCode, String departmentCode, String courseNumber, String courseName) {
 		setCollege(collegeCode);
 		setDepartment(departmentCode);
-		setNumber(courseNumber);
+		setNumber(Integer.parseInt(courseNumber));
 		setName(courseName);
 	}
 
@@ -35,6 +40,7 @@ public class Course {
 	 * retrieve the college code
 	 * @return the 3 char college code 
 	 */
+	@DynamoDBAttribute(attributeName = CourseDirectory.collegeAttributeName)
 	public String getCollege() {
 		return _college;
 	}
@@ -47,10 +53,9 @@ public class Course {
 	protected void setCollege(String college) {
 		try {
 			if (!CourseDirectory.isValidCollegeCode(college)) {
-				throw new Exception("Trying to set college code to "+college+".");
+				throw new Exception("Error: Trying to set college code to "+college+".");
 			}
 		} catch (Exception e) {
-			System.out.println("Error: " + e.getMessage());
 			e.printStackTrace();
 			System.out.println("---------------------");
 		}
@@ -63,6 +68,7 @@ public class Course {
 	 * get the department code 
 	 * @return the department
 	 */
+	@DynamoDBHashKey(attributeName = CourseDirectory.departmentAttributeName)
 	public String getDepartment() {
 		return _department;
 	}
@@ -75,10 +81,9 @@ public class Course {
 	protected void setDepartment(String department) {
 		try {
 			if (!CourseDirectory.isValidDepartmentCode(department)) {
-				throw new Exception("Trying to set invalid department code.");
+				throw new Exception("Error: Trying to set invalid department code.");
 			}
 		} catch (Exception e) {
-			System.out.println("Error: " + e.getMessage());
 			e.printStackTrace();
 			System.out.println("---------------------");
 		}
@@ -90,7 +95,8 @@ public class Course {
 	 * get the course number
 	 * @return the courseNumber
 	 */
-	public String getNumber() {
+	@DynamoDBHashKey(attributeName = CourseDirectory.numberAttributeName)
+	public Integer getNumber() {
 		return _number;
 	}
 
@@ -99,13 +105,12 @@ public class Course {
 	 * set the course number
 	 * @param 3 digit course number
 	 */
-	protected void setNumber(String courseNumber) {
+	protected void setNumber(Integer courseNumber) {
 		try {
-			if (courseNumber.length() != 3) {
-				throw new Exception("Trying to set invalid course number.");
+			if (!CourseDirectory.isValidCourseNumber(Integer.toString(courseNumber))) {
+				throw new Exception("Error: Trying to set invalid course number.");
 			}
 		} catch (Exception e) {
-			System.out.println("Error: " + e.getMessage());
 			e.printStackTrace();
 			System.out.println("---------------------");
 		}
@@ -117,6 +122,7 @@ public class Course {
 	 * get the name of the course
 	 * @return the name of the course
 	 */
+	@DynamoDBAttribute(attributeName = CourseDirectory.nameAttributeName)
 	public String getName() {
 		return _name;
 	}

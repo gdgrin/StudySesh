@@ -16,7 +16,7 @@ public class DirectoryTester {
 			return;
 		}
 		
-		GetCourseRequest request = new GetCourseRequest("OG", "200");
+		GetCourseRequest request = new GetCourseRequest("EC", "327");
 		
 		Course be200;
 		try {
