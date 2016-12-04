@@ -8,29 +8,32 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.model.ResourceNotFoundException;
 
-public class DynamoDBManger {
+public class DynamoDBManager {
 	
 	public boolean isAuthenicated;
 	
 	protected AmazonDynamoDBClient dynamodbClient;
+	protected DynamoDBMapper mapper;
 	protected String tableName;
 	
 	private AWSCredentials credentials;
 	
 	
 	
-	protected DynamoDBManger() {
+	protected DynamoDBManager() {
 		isAuthenicated  = false;
 		dynamodbClient = null;
 		credentials = null;
+		mapper = null;
 	}
 	
-	public DynamoDBManger(AuthorizationKey authKey, String tableName) {
+	public DynamoDBManager(AuthorizationKey authKey, String tableName) {
 		isAuthenicated = false;
 		dynamodbClient = null;
 		this.tableName = tableName;
@@ -74,16 +77,17 @@ public class DynamoDBManger {
 		try {
 			dynamodbClient = new AmazonDynamoDBClient(credentials);
 			
-			if (dynamodbClient != null) {
-				return true;
-			}
-			
+			mapper = new DynamoDBMapper(dynamodbClient);			
 		}
 		catch (AmazonClientException e) {
 			System.out.println("Caught an AmazonClientException, which means the client encountered "
                     + "a serious internal problem while trying to communicate with AWS, "
                     + "such as not being able to access the network.");
             System.out.println("Error Message: " + e.getMessage());
+		}
+		
+		if (dynamodbClient != null) {
+			return true;
 		}
 		
 		return false;
@@ -125,6 +129,18 @@ public class DynamoDBManger {
         System.out.println("Error Type:       " + ase.getErrorType());
         System.out.println("Request ID:       " + ase.getRequestId());
 		ase.printStackTrace();
+	}
+	
+	/**
+	 * get an item of class and for primary key specified
+	 * @param clazz
+	 * @param primaryKey
+	 * @return object of type specified
+	 */
+	
+	public <T> T getMappedItem(Class<T> clazz, Object primaryKey) {
+		T returnObj = mapper.load(clazz, primaryKey);
+		return returnObj;
 	}
 	
 	

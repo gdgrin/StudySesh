@@ -9,7 +9,7 @@ import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.dynamodbv2.document.Item;
 
-public class CourseDirectoryManager extends DynamoDBManger {
+public class CourseDirectoryManager extends DynamoDBManager {
 		
 	/**
 	 * instantiate default null ClassDirectoryManager
