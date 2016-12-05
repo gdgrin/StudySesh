@@ -28,7 +28,16 @@ public class UserDirectoryManager extends DynamoDBManager {
 	}
 	
 	public void addNewUser(User newUser) {
+		newUser.setId(null);  		//forced AWS to auto-generate a new UDID
 		saveMappedItem(newUser);
+	}
+	
+	public void updateUser(User updateUser) throws Exception{
+		if (updateUser.getId() == null) {
+			throw new Exception("Trying to update a user without an Id");
+		}
+		
+		saveMappedItem(updateUser);
 	}
 	
 	public ArrayList<Course> getCoursesForUser(User user) {
@@ -45,5 +54,9 @@ public class UserDirectoryManager extends DynamoDBManager {
 		
 		return courses;
 	}
+	
+	
+	
+	
 	
 }

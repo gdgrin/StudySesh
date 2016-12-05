@@ -1,20 +1,17 @@
 package structures;
 
 public class AuthorizationKey {
-
-	static final private String accessKeyDefault = "AKIAJMYDIODMCSWDV6JQ";
-	static final private String secretKeyDefault = "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";
 	
 	private String accessKey;
 	private String secretKey;
 	
 	
 	/**
-	 * created AuthorizationKey with default keys with access to StudySesh AWS dynamoDB
+	 * created AuthorizationKey with null keys
 	 */
 	public AuthorizationKey() {
-		this.accessKey = accessKeyDefault;
-		this.secretKey = secretKeyDefault;
+		this.accessKey = null;
+		this.secretKey = null;
 	}
 	
 	/**

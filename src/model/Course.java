@@ -1,6 +1,5 @@
 package model;
 
-import javax.security.auth.kerberos.KerberosTicket;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
