@@ -27,7 +27,18 @@ public class Session {
 	
 
 	public Session() {
-		// TODO Auto-generated constructor stub
+		startTime = null;
+		endTime = null;
+		course = null;
+		members = null;
+		desciption = null;
+		location = null;
+		id = null;
+	}
+	
+	public Session(String id) {
+		this();
+		this.setId(id);
 	}
 
 	@DynamoDBAttribute(attributeName = SessionDirectory.startTimeAttributeName)
@@ -67,6 +78,12 @@ public class Session {
 	public void setId(String id) {this.id = id;}
 	
 	
+	public CoursePrimaryKey getCourse() {
+		return course;
+	}
+	public void setCourse(CoursePrimaryKey courseId) {
+		this.course = courseId;
+	}
 	
 	
 	

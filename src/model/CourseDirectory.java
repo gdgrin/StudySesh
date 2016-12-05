@@ -7,6 +7,7 @@ public class CourseDirectory {
 	static final public String collegeAttributeName = "college";
 	static final public String numberAttributeName = "courseNumber";
 	static final public String nameAttributeName = "title";
+	static final public String membersAttributeName = "members";
 	
 	static final int collegeCodeSize = 3;
 	static final int departmentCodeSize = 2;

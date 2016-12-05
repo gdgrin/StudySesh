@@ -1,6 +1,8 @@
 package model;
 
 
+import java.util.List;
+
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
@@ -14,6 +16,7 @@ public class Course {
 	private String _department;
 	private Integer _number;
 	private String _name;
+	private List<String> members;
 	
 	/**
 	 * set default values: college = "ABC", department = "XX", and courseNumber = 100
@@ -159,8 +162,15 @@ public class Course {
 	}
 	
 	public CoursePrimaryKey getPrimaryKey() {
+		if (getDepartment() == null || getNumber() == null) {
+			return null;
+		}
 		return new CoursePrimaryKey(getDepartment(), getNumber());
 	}
+
+	@DynamoDBAttribute(attributeName = CourseDirectory.membersAttributeName)
+	public List<String> getMembers() {return members;}
+	public void setMembers(List<String> members) {this.members = members;}
 	
 	
 	

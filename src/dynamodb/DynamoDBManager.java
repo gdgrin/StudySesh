@@ -147,6 +147,10 @@ public class DynamoDBManager {
 		mapper.save(saveObj);
 	}
 	
+	public void deleteMappedItem(Object objToDelete) {
+		mapper.delete(objToDelete);
+	}
+	
 	
 
 }

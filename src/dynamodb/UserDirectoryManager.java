@@ -3,6 +3,7 @@ package dynamodb;
 import java.util.ArrayList;
 
 import model.Course;
+import model.Session;
 import model.User;
 import model.UserDirectory;
 import structures.AuthorizationKey;
@@ -40,6 +41,14 @@ public class UserDirectoryManager extends DynamoDBManager {
 		saveMappedItem(updateUser);
 	}
 	
+	public void deleteUser(User userToDelete) throws Exception {
+		if (userToDelete.getId() == null) {
+			throw new Exception("Trying to delete a user without an Id");
+		}
+		
+		deleteMappedItem(userToDelete);
+	}
+	
 	public ArrayList<Course> getCoursesForUser(User user) {
 		
 		ArrayList<Course> courses = new ArrayList<Course>();
@@ -54,6 +63,22 @@ public class UserDirectoryManager extends DynamoDBManager {
 		
 		return courses;
 	}
+	
+	public ArrayList<Session> getSessionsForUser(User user) {
+		ArrayList<Session> sessions = new ArrayList<Session>();
+		
+		for (String sessionId : user.getSessions()) {
+			
+			Session primaryKey = new Session(sessionId);
+			Session sessionReturned = getMappedItem(Session.class, primaryKey);
+			
+			sessions.add(sessionReturned);	
+		}
+		
+		return sessions;
+	}
+	
+	
 	
 	
 	

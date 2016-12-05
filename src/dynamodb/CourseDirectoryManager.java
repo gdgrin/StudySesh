@@ -2,10 +2,12 @@ package dynamodb;
 
 import model.Course;
 import model.CourseDirectory;
+import model.User;
 import structures.AuthorizationKey;
 import structures.Requests.GetCourseRequest;
 
-import com.amazonaws.AmazonClientException;
+import java.util.ArrayList;
+
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.dynamodbv2.document.Item;
 
@@ -53,13 +55,28 @@ public class CourseDirectoryManager extends DynamoDBManager {
 				returnItem.getString(CourseDirectory.nameAttributeName));
 			
 
-		
 		return returnCourse;
 	}
 	
 	
-	public void saveCourse(Course course) {
+	public void updateCourse(Course course) throws Exception{
+		if (course.getPrimaryKey() == null) {
+			throw new Exception("Course does not have a valid unique primary key.");
+		}
+		saveMappedItem(course);
+	}
+	
+	public ArrayList<User> getMembersOfCourse(Course course) {
+		ArrayList<User> members = new ArrayList<User>();
 		
+		for (String userID : course.getMembers()) {
+			User primaryKey = new User(userID);
+			
+			User returnUser = getMappedItem(User.class, primaryKey);
+			members.add(returnUser);
+		}
+		
+		return members;
 	}
 	
 

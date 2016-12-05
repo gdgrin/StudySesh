@@ -2,14 +2,14 @@ package model;
 
 public class SessionDirectory {
 
-	static final String tableName = "SessionDirectory";
-	static final String startTimeAttributeName = "startTime";
-	static final String endTimeAttributeName = "endTime";
-	static final String membersAttributeName = "members";
-	static final String courseAttributeName = "course";
-	static final String descriptionAttributeName = "description";
-	static final String locationAttributeName = "location";
-	static final String idAttributeName = "Id";
+	public static final String tableName = "SessionDirectory";
+	public static final String startTimeAttributeName = "startTime";
+	public static final String endTimeAttributeName = "endTime";
+	public static final String membersAttributeName = "members";
+	public static final String courseAttributeName = "course";
+	public static final String descriptionAttributeName = "description";
+	public static final String locationAttributeName = "location";
+	public static final String idAttributeName = "Id";
 	
 	public SessionDirectory() {
 		// TODO Auto-generated constructor stub
